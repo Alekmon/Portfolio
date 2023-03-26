@@ -42,12 +42,12 @@ class StoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Поле :attribute обязательно для заполенния!',
-            'image.required' => 'Поле :attribute обязательно для заполенния!',
-            'description.required' => 'Поле :attribute обязательно для заполенния!',
+            'name.required' => 'Поле :attribute обязательно для заполнения!',
+            'image.required' => 'Поле :attribute обязательно для заполнения!',
+            'description.required' => 'Поле :attribute обязательно для заполнения!',
             'name.min' => 'Поле :attribute должно состоять минимум из 3-х символов!',
             'image.mimes' => 'Поле :attribute должно быть формата JPEG, PNG, JPG!',
-            'price.required' => 'Поле :attribute обязательно для заполенния!',
+            'price.required' => 'Поле :attribute обязательно для заполнения!',
         ];
     }
 }

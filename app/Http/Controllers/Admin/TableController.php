@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Table\StoreRequest;
+use App\Http\Requests\Admin\Table\UpdateRequest;
 use App\Models\Table;
 use Illuminate\Http\Request;
 
@@ -28,9 +30,13 @@ class TableController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        Table::create($validated);
+
+        return redirect()->route('admin.tables.index')->with('message', 'Столик успешно создан!');
     }
 
     /**
@@ -44,24 +50,30 @@ class TableController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Table $table)
     {
-        //
+        return view('Admin.table.edit', compact('table'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, Table $table)
     {
-        //
+        $validated = $request->validated();
+
+        $table->update($validated);
+
+        return redirect()->route('admin.tables.index')->with('message', 'Столик успешно изменен!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Table $table)
     {
-        //
+        $table->delete();
+
+        return redirect()->route('admin.tables.index')->with('message', 'Столик успешно удален!');
     }
 }

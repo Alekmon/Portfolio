@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\Category;
+namespace App\Http\Requests\Admin\Table;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -22,9 +22,10 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min:3'],
-            'image' => ['required', 'image','mimes:jpeg,png,jpg'],
-            'description' => ['required'],
+            'name' => ['required'],
+            'guest_number' => ['required'],
+            'status' => ['required'],
+            'location' => ['required'],
         ];
     }
 
@@ -32,8 +33,9 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => 'Название',
-            'image' => 'Изображение',
-            'description' => 'Описание',
+            'guest_number' => 'Колличество Гостей',
+            'status' => 'Статус',
+            'location' => 'Место',
         ];
     }
 
@@ -41,10 +43,9 @@ class StoreRequest extends FormRequest
     {
         return [
             'name.required' => 'Поле :attribute обязательно для заполнения!',
-            'image.required' => 'Поле :attribute обязательно для заполнения!',
-            'description.required' => 'Поле :attribute обязательно для заполнения!',
-            'name.min' => 'Поле :attribute должно состоять минимум из 3-х символов!',
-            'name.mimes' => 'Поле :attribute должно быть формата JPEG, PNG, JPG!',
+            'guest_number.required' => 'Поле :attribute обязательно для заполнения!',
+            'status.required' => 'Поле :attribute обязательно для заполнения!',
+            'location.required' => 'Поле :attribute обязательно для заполнения!',
         ];
     }
 }
