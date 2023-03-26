@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Menu\StoreRequest;
+use App\Http\Requests\Admin\Menu\UpdateRequest;
+use App\Models\Category;
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class MenuController extends Controller
 {
@@ -14,6 +19,7 @@ class MenuController extends Controller
     public function index()
     {
         $menus = Menu::all();
+
         return view('Admin.menu.index', compact('menus'));
     }
 
@@ -22,15 +28,30 @@ class MenuController extends Controller
      */
     public function create()
     {
-        return view('Admin.menu.create');
+        $categories = Category::all();
+
+        return view('Admin.menu.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        DB::transaction(function() use ($validated, $request){
+            $validated['image'] = $request->file('image')->store('public/menus');
+    
+            $menu = Menu::create($validated);
+    
+            if($request->has('categories')){
+                $menu->categories()->attach($request->categories);
+            }
+
+        });
+        
+        return redirect()->route('admin.menus.index')->with('message', 'Меню успешно создано!');
     }
 
     /**
@@ -44,24 +65,48 @@ class MenuController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Menu $menu)
     {
-        //
+        $categories = Category::all();
+
+        return view('Admin.menu.edit', compact('menu', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, Menu $menu)
     {
-        //
+        $validated = $request->validated();
+
+        DB::transaction(function() use ($request, $validated, $menu){
+            
+            if($request->hasFile('image')){
+                Storage::delete($menu->image);
+                $validated['image'] = $request->file('image')->store('public/menus');
+            }
+
+            $menu->update($validated);
+
+            if($request->has('categories')){
+                $menu->categories()->sync($request->categories);
+            }
+        });
+
+        return redirect()->route('admin.menus.index')->with('message', 'Меню успешно изменено!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Menu $menu)
     {
-        //
+        DB::transaction(function() use ($menu){
+            Storage::delete($menu->image);
+            $menu->categories()->detach();
+            $menu->delete();
+        });
+
+        return redirect()->route('admin.menus.index')->with('message', 'Меню успешно удалено!');
     }
 }
