@@ -41,10 +41,8 @@ class StoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Поле :attribute обязательно для заполенения!',
-            'email.required' => 'Поле :attribute обязательно для заполенения!',
+            '*.required' => 'Поле :attribute обязательно для заполенения!',
             'email.email' => 'Поле :attribute должно быть формата Электронной Почты!',
-            'password.required' => 'Поле :attribute обязательно для заполенения!',
             'name.min' => 'Поле :attribute должно состоять минимум из 3-х символов!',
             'password.min' => 'Поле :attribute должно состоять минимум из 8-х символов!',
             'email.unique' => 'Пользователь с такой почтой уже существует!',

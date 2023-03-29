@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Category\StoreRequest;
 use App\Http\Requests\Admin\Category\UpdateRequest;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
@@ -80,8 +81,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        Storage::delete($category->image);
-        $category->delete();
+        DB::transaction(function() use ($category) {
+            Storage::delete($category->image);
+            $category->menus()->detach();
+            $category->delete();
+        });
+
 
         return redirect()->route('admin.categories.index')->with('message', 'Категория успешно удалена!');
     }

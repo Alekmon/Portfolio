@@ -38,9 +38,8 @@ class LoginRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => 'Поле :attribute обязательно для заполенения!',
+            '*.required' => 'Поле :attribute обязательно для заполенения!',
             'email.email' => 'Поле :attribute должно быть формата Электронной Почты!',
-            'password.required' => 'Поле :attribute обязательно для заполенения!',
         ];
     }
 }

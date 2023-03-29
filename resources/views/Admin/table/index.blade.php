@@ -11,7 +11,7 @@
     </div>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="flex justify-end m-2 p-2">
-            <a href="{{ route('admin.menus.create') }}" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-700 rounded hover:text-white">Создать Меню</a>
+            <a href="{{ route('admin.tables.create') }}" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-700 rounded hover:text-white">Создать Столик</a>
         </div>
         
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">

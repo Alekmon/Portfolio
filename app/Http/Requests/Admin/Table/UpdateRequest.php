@@ -42,10 +42,7 @@ class UpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Поле :attribute обязательно для заполнения!',
-            'guest_number.required' => 'Поле :attribute обязательно для заполнения!',
-            'status.required' => 'Поле :attribute обязательно для заполнения!',
-            'location.required' => 'Поле :attribute обязательно для заполнения!',
+            '*.required' => 'Поле :attribute обязательно для заполнения!',
         ];
     }
 }
