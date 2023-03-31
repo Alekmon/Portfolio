@@ -39,6 +39,15 @@ Route::controller(UserController::class)->as('user.')->group(function() {
     Route::post('login', 'logUser')->name('logUser')->middleware('guest');
     
     Route::get('logout', 'logout')->name('logout')->middleware('auth');
+
+    Route::middleware('guest')->group(function(){
+
+        Route::get('forget-password', 'showForgetPassword')->name('showForgetPassword');
+        Route::post('forget-password', 'submitForgetPassword')->name('submitForgetPassword');
+        Route::get('reset-password', 'showResetPassword')->name('showResetPassword');
+        Route::post('reset-password', 'submitResetPassword')->name('submitResetPassword');
+
+    });
 });
 
 Route::prefix('admin')->as('admin.')->middleware(['auth', 'admin'])->group(function() {

@@ -37,30 +37,43 @@
       class="flex-col mt-8 space-y-4 md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0">
       <a class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 hover:text-green-400"
       href="{{ route('main') }}">Главная</a>
+
       @auth
+
         @if (auth()->user()->is_admin == 1) 
           <a class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 hover:text-green-400"
             href="{{ route('admin.index') }}">Админ</a>
         @endif
+
       @endauth
+
         <a class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 hover:text-green-400"
           href="{{ route('categories.index') }}">Категории</a>
         <a class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 hover:text-green-400"
           href="{{ route('menus.index') }}">Меню</a>
         <a class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 hover:text-green-400"
           href="{{ route('reservation.one') }}">Бронирование Столика</a>
-          @guest
+
+        @guest
+
           <div>
             <a class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 hover:text-green-400 pr-10 pl-10"
             href="{{ route('user.registration') }}">Регистрация</a>
             <a class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 hover:text-green-400"
             href="{{ route('user.login') }}">Войти</a>
           </div>
-          @endguest
-          @auth
-          <a class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 hover:text-green-400 pl-8"
-          href="{{ route('user.logout') }}">Выйти</a>
-          @endauth
+
+        @endguest
+
+        @auth
+
+            <a class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 hover:text-green-400 pl-8"
+            href="">{{ auth()->user()->name }}</a>
+            <a class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 hover:text-green-400 pl-1"
+            href="{{ route('user.logout') }}">Выйти</a>
+
+        @endauth
+
       </div>
     </nav>
   </div>
