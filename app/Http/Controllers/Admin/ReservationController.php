@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\TableStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Reservation\StoreRequest;
 use App\Models\Reservation;
 use App\Models\Table;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Service\Reservation\AdminReservationService;
 
 class ReservationController extends Controller
 {
@@ -33,15 +31,11 @@ class ReservationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, AdminReservationService $adminReservationService)
     {
         $validated = $request->validated();
         
-        $table = Table::findOrFail($request->table_id);
-
-        Reservation::create($validated);
-        $table->status = TableStatus::Рассматривается;
-        $table->save();
+        $adminReservationService->storeReservation($request, $validated);
 
         return redirect()->route('admin.reservation.index')->with('message', 'Бронь успешно создана!');
     }
@@ -66,20 +60,11 @@ class ReservationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreRequest $request, Reservation $reservation)
+    public function update(StoreRequest $request, Reservation $reservation, AdminReservationService $adminReservationService)
     {
         $validated = $request->validated();
         
-        if($request->get('table_id') != $reservation->table_id){
-            $oldTable = Table::findOrFail($reservation->table_id);
-            $newTable = Table::findOrFail($request->table_id);
-            $oldTable->status = TableStatus::Доступно;
-            $oldTable->save();
-            $newTable->status = TableStatus::Недоступно;
-            $newTable->save();
-        }
-        
-        $reservation->update($validated);
+        $adminReservationService->updateReservation($request, $reservation, $validated);
 
         return redirect()->route('admin.reservation.index')->with('message', 'Бронь успешно изменена!');
     }
@@ -87,15 +72,10 @@ class ReservationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reservation $reservation)
+    public function destroy(Reservation $reservation, AdminReservationService $adminReservationService)
     {
 
-        DB::transaction(function() use ($reservation) {
-            $table = Table::findOrFail($reservation->table_id);
-            $table->status = TableStatus::Доступно;
-            $table->save();
-            $reservation->delete();
-        });
+        $adminReservationService->destroyReservation($reservation);
 
         return redirect()->route('admin.reservation.index')->with('message', 'Бронирование успешно удаленно!');
     }

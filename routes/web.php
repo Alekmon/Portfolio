@@ -16,18 +16,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MainController::class, 'index'])->name('main');
 
-Route::get('/categories', [FrontendCategoryController::class, 'index'])->name('categories.index');
-Route::get('/categories/{category}', [FrontendCategoryController::class, 'show'])->name('categories.show');
+Route::get('categories', [FrontendCategoryController::class, 'index'])->name('categories.index');
+Route::get('categories/{category}', [FrontendCategoryController::class, 'show'])->name('categories.show');
 
-Route::get('/menus', [FrontendMenuController::class, 'index'])->name('menus.index');
+Route::get('menus', [FrontendMenuController::class, 'index'])->name('menus.index');
 
-Route::get('/reservation/step_one', [FrontendReservationController::class, 'stepOne'])->name('reservation.one');
-Route::post('/reservation/step_one', [FrontendReservationController::class, 'storeStepOne'])->name('reservation.storeOne');
-Route::get('/reservation/step_two', [FrontendReservationController::class, 'stepTwo'])->name('reservation.two');
-Route::post('/reservation/step_two', [FrontendReservationController::class, 'storeStepTwo'])->name('reservation.storeTwo');
+//бронирование
+Route::get('reservation/step_one', [FrontendReservationController::class, 'stepOne'])->name('reservation.one');
+Route::post('reservation/step_one', [FrontendReservationController::class, 'storeStepOne'])->name('reservation.storeOne');
+Route::get('reservation/step_two', [FrontendReservationController::class, 'stepTwo'])->name('reservation.two');
+Route::post('reservation/step_two', [FrontendReservationController::class, 'storeStepTwo'])->name('reservation.storeTwo');
+Route::get('reservation/status/{reservation}', [MainController::class, 'reservationStatus'])->name('reservation.status')->middleware('auth');
 
-Route::get('/thanks', [WelcomeController::class, 'thanks'])->name('reservation.thanks');
+Route::get('thanks', [WelcomeController::class, 'thanks'])->name('reservation.thanks');
 
+//регитсрация, логин, изменение пароля
 Route::controller(UserController::class)->as('user.')->group(function() {
 
     Route::get('registration', 'registration')->name('registration')->middleware('guest');
@@ -50,6 +53,7 @@ Route::controller(UserController::class)->as('user.')->group(function() {
     });
 });
 
+//админка 
 Route::prefix('admin')->as('admin.')->middleware(['auth', 'admin'])->group(function() {
     
     Route::get('/', [AdminController::class, 'index'])->name('index');
