@@ -138,7 +138,7 @@
         </div>
       </div>
     </section>
-
+{{-- 
     <section class="pt-4 pb-12 bg-gray-800">
       <div class="my-16 text-center">
         <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
@@ -192,6 +192,6 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> --}}
 
 @endsection

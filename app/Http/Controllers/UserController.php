@@ -10,20 +10,22 @@ use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\ResetPasswordRequest;
 use App\Http\Requests\User\ForgotPasswordRequest;
 use App\Service\User\SubmitPasswordService;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
-    public function registration()
+    public function registration(): View
     {
         return view('Auth.register');
     }
 
-    public function login()
+    public function login(): View
     {
         return view('Auth.login');
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): RedirectResponse
     {
         $validated = $request->validated();
         $validated['password'] = Hash::make($validated['password']);
@@ -34,7 +36,7 @@ class UserController extends Controller
         return redirect()->route('main');
     }
 
-    public function logUser(LoginRequest $request)
+    public function logUser(LoginRequest $request): RedirectResponse
     {
         $validated = $request->validated();
         
@@ -47,7 +49,7 @@ class UserController extends Controller
         return back()->withErrors(['email' => 'Неверно введенные данные!'])->onlyInput('email');
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         auth()->logout();
 
@@ -57,12 +59,12 @@ class UserController extends Controller
         return redirect()->route('main');
     }
 
-    public function showForgetPassword()
+    public function showForgetPassword(): View
     {
         return view('Auth.forgot-password');
     }
 
-    public function submitForgetPassword(ForgotPasswordRequest $request, SubmitPasswordService $submitPasswordService)
+    public function submitForgetPassword(ForgotPasswordRequest $request, SubmitPasswordService $submitPasswordService): RedirectResponse
     {
         $email = $request->validated();
 
@@ -72,12 +74,12 @@ class UserController extends Controller
 
     }
 
-    public function showResetPassword()
+    public function showResetPassword(): View
     {
         return view('Auth.reset-password');
     }
 
-    public function submitResetPassword(ResetPasswordRequest $request, SubmitPasswordService $submitPasswordService)
+    public function submitResetPassword(ResetPasswordRequest $request, SubmitPasswordService $submitPasswordService): RedirectResponse
     {
         $validated = $request->validated();
 

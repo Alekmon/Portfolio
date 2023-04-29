@@ -7,6 +7,8 @@ use App\Http\Requests\Admin\Menu\StoreRequest;
 use App\Http\Requests\Admin\Menu\UpdateRequest;
 use App\Models\Category;
 use App\Models\Menu;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +18,7 @@ class MenuController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         $menus = Menu::all();
 
@@ -26,7 +28,7 @@ class MenuController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         $categories = Category::all();
 
@@ -36,7 +38,7 @@ class MenuController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -65,7 +67,7 @@ class MenuController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Menu $menu)
+    public function edit(Menu $menu): View
     {
         $categories = Category::all();
 
@@ -75,7 +77,7 @@ class MenuController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, Menu $menu)
+    public function update(UpdateRequest $request, Menu $menu): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -99,7 +101,7 @@ class MenuController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Menu $menu)
+    public function destroy(Menu $menu): RedirectResponse
     {
         DB::transaction(function() use ($menu){
             Storage::delete($menu->image);

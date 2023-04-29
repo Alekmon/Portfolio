@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class AdminReservationService
 {
-    public function storeReservation(FormRequest $request, $validated)
+    public function storeReservation(FormRequest $request, $validated): void
     {
         $table = Table::findOrFail($request->table_id);
 
@@ -19,7 +19,7 @@ class AdminReservationService
         $table->save();
     }
 
-    public function updateReservation(FormRequest $request, Reservation $reservation, $validated)
+    public function updateReservation(FormRequest $request, Reservation $reservation, $validated): void
     {
         if($request->get('table_id') != $reservation->table_id){
             $oldTable = Table::findOrFail($reservation->table_id);
@@ -33,7 +33,7 @@ class AdminReservationService
         $reservation->update($validated);
     }
 
-    public function destroyReservation(Reservation $reservation)
+    public function destroyReservation(Reservation $reservation): void
     {
         DB::transaction(function() use ($reservation) {
             $table = Table::findOrFail($reservation->table_id);

@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 class FrontendReservationService
 {
 
-    public function storeStepOne(FormRequest $request, $validated)
+    public function storeStepOne(FormRequest $request, $validated): void
     {
         if(empty($request->session()->get('reservation'))){
             $reservation = new Reservation();
@@ -26,13 +26,13 @@ class FrontendReservationService
         }
     }
 
-    public function storeStepTwo(Request $request, $validated)
+    public function storeStepTwo(Request $request, $validated): void
     {
         DB::transaction(function() use ($validated, $request){
             $reservation = $request->session()->get('reservation');
             $reservation->fill($validated);
             $reservation->save();
-            
+
             ReservationJob::dispatch($reservation);
 
             $table = Table::findOrFail($request->table_id);

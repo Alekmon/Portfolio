@@ -7,13 +7,15 @@ use App\Http\Requests\Admin\Reservation\StoreRequest;
 use App\Models\Reservation;
 use App\Models\Table;
 use App\Service\Reservation\AdminReservationService;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ReservationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         $reservations = Reservation::all();
         return view('Admin.reservation.index' ,compact('reservations'));
@@ -22,7 +24,7 @@ class ReservationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         $tables = Table::where('status', 'available')->get();
         return view('Admin.reservation.create', compact('tables'));
@@ -31,7 +33,7 @@ class ReservationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRequest $request, AdminReservationService $adminReservationService)
+    public function store(StoreRequest $request, AdminReservationService $adminReservationService): RedirectResponse
     {
         $validated = $request->validated();
         
@@ -51,7 +53,7 @@ class ReservationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Reservation $reservation)
+    public function edit(Reservation $reservation): View
     {
         $tables = Table::where('status', 'available')->get();
         return view('Admin.reservation.edit', compact('reservation', 'tables'));
@@ -60,7 +62,7 @@ class ReservationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreRequest $request, Reservation $reservation, AdminReservationService $adminReservationService)
+    public function update(StoreRequest $request, Reservation $reservation, AdminReservationService $adminReservationService): RedirectResponse
     {
         $validated = $request->validated();
         
@@ -72,7 +74,7 @@ class ReservationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reservation $reservation, AdminReservationService $adminReservationService)
+    public function destroy(Reservation $reservation, AdminReservationService $adminReservationService): RedirectResponse
     {
 
         $adminReservationService->destroyReservation($reservation);
