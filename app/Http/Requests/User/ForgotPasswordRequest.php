@@ -26,14 +26,14 @@ class ForgotPasswordRequest extends FormRequest
         ];
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'email' => 'Почта',
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'email.required' => 'Поле :attribute обязательно для заполнения!',

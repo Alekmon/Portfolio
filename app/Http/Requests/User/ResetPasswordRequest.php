@@ -27,7 +27,7 @@ class ResetPasswordRequest extends FormRequest
         ];
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'email' => 'Почта',
@@ -35,7 +35,7 @@ class ResetPasswordRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             '*.required' => 'Поле :attribute обязательно для заполенения!',

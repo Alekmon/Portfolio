@@ -29,7 +29,7 @@ class UpdateRequest extends FormRequest
         ];
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'name' => 'Название',
@@ -39,7 +39,7 @@ class UpdateRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             '*.required' => 'Поле :attribute обязательно для заполнения!',

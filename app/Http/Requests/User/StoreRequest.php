@@ -29,7 +29,7 @@ class StoreRequest extends FormRequest
         ];
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'name' => 'Имя',
@@ -38,7 +38,7 @@ class StoreRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             '*.required' => 'Поле :attribute обязательно для заполенения!',
