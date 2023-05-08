@@ -42,7 +42,7 @@
                         {{ $menu->name }}
                     </th>
                     <td class="px-6 py-4">
-                        <img src="{{ Storage::url($menu->image) }}" alt="image" class="w-16 h-16 rounded">
+                        <img src="{{ Storage::url('public/menus/' . $menu->image) }}" alt="image" class="w-16 h-16 rounded">
                     </td>
                     <td class="px-6 py-4">
                         {{ $menu->description }}

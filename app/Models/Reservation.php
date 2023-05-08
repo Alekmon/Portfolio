@@ -22,6 +22,6 @@ class Reservation extends Model
 
     public function table(): BelongsTo
     {
-        return $this->belongsTo(Table::class, 'table_id', 'id');
+        return $this->belongsTo(Table::class);
     }
 }

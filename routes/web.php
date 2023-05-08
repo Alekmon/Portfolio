@@ -13,24 +13,41 @@ use App\Http\Controllers\Frontend\WelcomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-
+//главная фронт 
 Route::get('/', [MainController::class, 'index'])->name('main');
+//категории фронт
+Route::controller(FrontendCategoryController::class)->prefix('categories')->as('categories.')->group(function() {
 
-Route::get('categories', [FrontendCategoryController::class, 'index'])->name('categories.index');
-Route::get('categories/{category}', [FrontendCategoryController::class, 'show'])->name('categories.show');
+    Route::get('/', 'index')->name('index');
 
+    Route::get('{category}', 'show')->name('show');
+
+});
+//меню фронт
 Route::get('menus', [FrontendMenuController::class, 'index'])->name('menus.index');
 
-//бронирование
-Route::get('reservation/step_one', [FrontendReservationController::class, 'stepOne'])->name('reservation.one');
-Route::post('reservation/step_one', [FrontendReservationController::class, 'storeStepOne'])->name('reservation.storeOne');
-Route::get('reservation/step_two', [FrontendReservationController::class, 'stepTwo'])->name('reservation.two');
-Route::post('reservation/step_two', [FrontendReservationController::class, 'storeStepTwo'])->name('reservation.storeTwo');
-Route::get('reservation/status/{reservation}', [MainController::class, 'reservationStatus'])->name('reservation.status')->middleware('auth');
+//бронирование фронт
+Route::prefix('reservation')->as('reservation.')->group(function() {
 
-Route::get('thanks', [WelcomeController::class, 'thanks'])->name('reservation.thanks');
+    Route::controller(FrontendReservationController::class)->group(function() {
 
-//регитсрация, логин, изменение пароля
+        Route::get('step_one', 'stepOne')->name('one');
+
+        Route::post('step_one', 'storeStepOne')->name('storeOne');
+
+        Route::get('step_two', 'stepTwo')->name('two');
+
+        Route::post('step_two', 'storeStepTwo')->name('storeTwo');
+
+    });
+    //статус 
+    Route::get('status/{reservation}', [MainController::class, 'reservationStatus'])->name('status')->middleware('auth');
+    //спасибо за бронироание
+    Route::get('thanks', [WelcomeController::class, 'thanks'])->name('thanks');
+});
+
+
+//регистрация, логин
 Route::controller(UserController::class)->as('user.')->group(function() {
 
     Route::get('registration', 'registration')->name('registration')->middleware('guest');
@@ -42,12 +59,15 @@ Route::controller(UserController::class)->as('user.')->group(function() {
     Route::post('login', 'logUser')->name('logUser')->middleware('guest');
     
     Route::get('logout', 'logout')->name('logout')->middleware('auth');
-
+    //изменение пароля
     Route::middleware('guest')->group(function(){
 
         Route::get('forget-password', 'showForgetPassword')->name('showForgetPassword');
+
         Route::post('forget-password', 'submitForgetPassword')->name('submitForgetPassword');
+
         Route::get('reset-password', 'showResetPassword')->name('showResetPassword');
+
         Route::post('reset-password', 'submitResetPassword')->name('submitResetPassword');
 
     });
@@ -55,14 +75,14 @@ Route::controller(UserController::class)->as('user.')->group(function() {
 
 //админка 
 Route::prefix('admin')->as('admin.')->middleware(['auth', 'admin'])->group(function() {
-    
+    //главная
     Route::get('/', [AdminController::class, 'index'])->name('index');
-
+    //категрии админка
     Route::resource('categories', CategoryController::class);
-
+    //меню админка
     Route::resource('menus', MenuController::class);
-
+    //столики админка
     Route::resource('tables', TableController::class);
-
+    //бронирование админка
     Route::resource('reservation', ReservationController::class);
 });

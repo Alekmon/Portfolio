@@ -15,6 +15,12 @@ use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
+
+    public function __construct(private SubmitPasswordService $submitPasswordService)
+    {
+        $this->middleware('throttle:4,1')->only('logUser');
+    }
+
     public function registration(): View
     {
         return view('Auth.register');
@@ -64,11 +70,11 @@ class UserController extends Controller
         return view('Auth.forgot-password');
     }
 
-    public function submitForgetPassword(ForgotPasswordRequest $request, SubmitPasswordService $submitPasswordService): RedirectResponse
+    public function submitForgetPassword(ForgotPasswordRequest $request): RedirectResponse
     {
         $email = $request->validated();
 
-        $submitPasswordService->storeForgetPassword($email);
+        $this->submitPasswordService->storeForgetPassword($email);
 
         return redirect()->route('user.showResetPassword')->with('message', 'Мы отправили пароль на вашу почту!');
 
@@ -79,11 +85,11 @@ class UserController extends Controller
         return view('Auth.reset-password');
     }
 
-    public function submitResetPassword(ResetPasswordRequest $request, SubmitPasswordService $submitPasswordService): RedirectResponse
+    public function submitResetPassword(ResetPasswordRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
-        $submitPasswordService->storeResetPassword($validated);
+        $this->submitPasswordService->storeResetPassword($validated);
 
         return redirect()->route('user.login')->with('message', 'Ваш пароль успешно изменен!');
     }

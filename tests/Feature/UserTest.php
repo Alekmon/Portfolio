@@ -14,18 +14,15 @@ class UserTest extends TestCase
 
     public function test_registered_user_login_and_redirect_successfully()
     {
-        User::factory()->create([
-            'email' => 'Examle@gmail.com',
-            'password' => '12345678',
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->post('/login', [
-            'email' => 'Examle@gmail.com',
-            'password' => '12345678',
+            'email' => $user->email,
+            'password' => $user->password,
         ]);
 
         $response->assertStatus(302);
-
+        
         $response->assertRedirect('/');
     }
 

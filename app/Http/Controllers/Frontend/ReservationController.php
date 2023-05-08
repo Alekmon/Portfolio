@@ -13,6 +13,9 @@ use Illuminate\Http\RedirectResponse;
 
 class ReservationController extends Controller
 {
+    public function __construct(private FrontendReservationService $frontendReservationService)
+    {}
+
     public function stepOne(Request $request): View
     {
         $reservation = $request->session()->get('reservation');
@@ -21,11 +24,11 @@ class ReservationController extends Controller
         return view('Frontend.reservation.step-one', compact('reservation', 'minDate', 'maxDate'));
     }
 
-    public function storeStepOne(ReservationRequest $request, FrontendReservationService $frontendReservationService): RedirectResponse
+    public function storeStepOne(ReservationRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
-        $frontendReservationService->storeStepOne($request, $validated);
+        $this->frontendReservationService->storeStepOne($request, $validated);
 
         return redirect()->route('reservation.two');
     }
@@ -39,13 +42,13 @@ class ReservationController extends Controller
         return view('Frontend.reservation.step-two', compact('reservation', 'tables'));
     }
 
-    public function storeStepTwo(Request $request, FrontendReservationService $frontendReservationService): RedirectResponse
+    public function storeStepTwo(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'table_id' => 'required',
         ]);
 
-        $frontendReservationService->storeStepTwo($request, $validated);
+        $this->frontendReservationService->storeStepTwo($request, $validated);
 
         return redirect()->route('reservation.thanks');
     }
