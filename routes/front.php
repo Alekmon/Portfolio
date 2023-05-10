@@ -8,9 +8,9 @@ use App\Http\Controllers\Frontend\WelcomeController;
 use App\Http\Controllers\Frontend\CategoryController;
 use App\Http\Controllers\Frontend\ReservationController;
 
-//главная фронт 
+//главная 
 Route::get('/', [MainController::class, 'index'])->name('main');
-//категории фронт
+//категории
 Route::controller(CategoryController::class)->prefix('categories')->as('categories.')->group(function() {
 
     Route::get('/', 'index')->name('index');
@@ -18,10 +18,10 @@ Route::controller(CategoryController::class)->prefix('categories')->as('categori
     Route::get('{category}', 'show')->name('show');
 
 });
-//меню фронт
+//меню
 Route::get('menus', [MenuController::class, 'index'])->name('menus.index');
 
-//бронирование фронт
+//бронирование
 Route::prefix('reservation')->as('reservation.')->group(function() {
 
     Route::controller(ReservationController::class)->group(function() {
@@ -45,15 +45,20 @@ Route::prefix('reservation')->as('reservation.')->group(function() {
 //регистрация, логин
 Route::controller(UserController::class)->as('user.')->group(function() {
 
-    Route::get('registration', 'registration')->name('registration')->middleware('guest');
+    Route::middleware('guest')->group(function () {
+
+        Route::get('registration', 'registration')->name('registration');
     
-    Route::get('login', 'login')->name('login')->middleware('guest');
+        Route::get('login', 'login')->name('login');
+        
+        Route::post('users', 'store')->name('store');
+        
+        Route::post('login', 'logUser')->name('logUser');
+
+    });
     
-    Route::post('users', 'store')->name('store')->middleware('guest');
-    
-    Route::post('login', 'logUser')->name('logUser')->middleware('guest');
-    
-    Route::get('logout', 'logout')->name('logout')->middleware('auth');
+        Route::get('logout', 'logout')->name('logout')->middleware('auth');
+
     //изменение пароля
     Route::middleware('guest')->group(function(){
 

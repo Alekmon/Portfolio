@@ -10,12 +10,12 @@ use App\Http\Controllers\Admin\ReservationController;
 Route::prefix('admin')->as('admin.')->middleware(['auth', 'admin'])->group(function() {
     //главная
     Route::get('/', [AdminController::class, 'index'])->name('index');
-    //категрии админка
+    //категрии
     Route::resource('categories', CategoryController::class);
-    //меню админка
+    //меню
     Route::resource('menus', MenuController::class);
-    //столики админка
+    //столики
     Route::resource('tables', TableController::class);
-    //бронирование админка
+    //бронирование
     Route::resource('reservation', ReservationController::class);
 });
