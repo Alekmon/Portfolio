@@ -21,7 +21,7 @@ class MenuFactory extends Factory
             'name' => Str::random(10),
             'description' => fake()->text(60),
             'image' => str_replace('\\', '/', fake()->image('public/storage/menus', 640, 480, null, false)),
-            'price' => rand(0.1, 60),
+            'price' => rand(1, 60),
         ];
     }
 }

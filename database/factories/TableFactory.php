@@ -19,7 +19,7 @@ class TableFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Столик ' . rand(1,10),
+            'name' => 'Столик ' . random_int(1, 20),
             'guest_number' => rand(2,6),
             'status' => TableStatus::Доступно,
             'location' => TableLocation::match(rand(1,3)),

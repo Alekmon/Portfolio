@@ -21,6 +21,7 @@ class AdminReservationService
 
     public function updateReservation(FormRequest $request, Reservation $reservation, $validated): void
     {
+        //если поменяли столик, изменяем статус
         if($request->get('table_id') != $reservation->table_id){
             $oldTable = Table::findOrFail($reservation->table_id);
             $newTable = Table::findOrFail($request->table_id);

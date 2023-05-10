@@ -22,7 +22,7 @@
     @endforeach
 
 </div>
-<div>
+<div class="p-3 ml-2 mr-6">
     {{ $menus->links() }}
 </div>
 </div>

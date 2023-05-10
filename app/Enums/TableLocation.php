@@ -8,7 +8,7 @@ enum TableLocation: string
     case Внутри = 'inside';
     case Снаружи = 'outside';
 
-    public static function match(int $int): self
+    public static function match(int $int): static
     {
         return match ($int) {
             1 => static::Передний,
