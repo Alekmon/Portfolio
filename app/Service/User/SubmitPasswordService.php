@@ -34,7 +34,7 @@ class SubmitPasswordService
     public function storeResetPassword($validated): RedirectResponse
     {
         $newPassword = DB::table('password_reset')->where('token', $validated['password'])->value('token');
-        if (! $newPassword){
+        if (! $newPassword) {
             return back()->with('message', 'Неверно введенный пароль!');
         }
 

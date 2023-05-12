@@ -4,18 +4,17 @@ namespace App\Http\Controllers\Frontend;
 
 use Carbon\Carbon;
 use App\Models\Table;
+use App\Models\Reservation;
+use App\Jobs\ReservationJob;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Frontend\ReservationRequest;
-use App\Service\Reservation\FrontendReservationService;
 use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\Frontend\ReservationRequest;
+use App\Enums\TableStatus;
 
 class ReservationController extends Controller
 {
-    public function __construct(private FrontendReservationService $frontendReservationService)
-    {}
-
     public function stepOne(Request $request): View
     {
         $reservation = $request->session()->get('reservation');
@@ -28,7 +27,15 @@ class ReservationController extends Controller
     {
         $validated = $request->validated();
 
-        $this->frontendReservationService->storeStepOne($request, $validated);
+        if(empty($request->session()->get('reservation'))) {
+            $reservation = new Reservation();
+            $reservation->fill($validated);
+            $request->session()->put('reservation', $reservation);
+        } else {
+            $reservation = $request->session()->get('reservation');
+            $reservation->fill($validated);
+            $request->session()->put('reservation', $reservation);
+        }
 
         return redirect()->route('reservation.two');
     }
@@ -48,7 +55,18 @@ class ReservationController extends Controller
             'table_id' => 'required',
         ]);
 
-        $this->frontendReservationService->storeStepTwo($request, $validated);
+        $reservation = $request->session()->get('reservation');
+        $reservation->fill($validated);
+        $reservation->save();
+
+        ReservationJob::dispatch($reservation);
+
+        $table = Table::findOrFail($request->table_id);
+        $table->status = TableStatus::Рассматривается;
+        $table->save();
+
+
+        $request->session()->forget('reservation');
 
         return redirect()->route('reservation.thanks');
     }

@@ -2,14 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Frontend\MainController;
 use App\Http\Controllers\Frontend\MenuController;
 use App\Http\Controllers\Frontend\WelcomeController;
 use App\Http\Controllers\Frontend\CategoryController;
 use App\Http\Controllers\Frontend\ReservationController;
 
-//главная 
-Route::get('/', [MainController::class, 'index'])->name('main');
 //категории
 Route::controller(CategoryController::class)->prefix('categories')->as('categories.')->group(function() {
 
@@ -35,9 +32,8 @@ Route::prefix('reservation')->as('reservation.')->group(function() {
         Route::post('step_two', 'storeStepTwo')->name('storeTwo');
 
     });
-    //статус 
-    Route::get('status/{reservation}', [MainController::class, 'reservationStatus'])->name('status')->middleware('auth');
-    //спасибо за бронироание
+
+    //спасибо за бронирование
     Route::get('thanks', [WelcomeController::class, 'thanks'])->name('thanks');
 });
 
@@ -49,7 +45,7 @@ Route::controller(UserController::class)->as('user.')->group(function() {
 
         Route::get('registration', 'registration')->name('registration');
     
-        Route::get('login', 'login')->name('login');
+        Route::get('login', 'login')->name('login')->middleware('throttle:6,1');
         
         Route::post('users', 'store')->name('store');
         

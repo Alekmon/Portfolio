@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         $schedule->call(function(){
-            DB::table('password_reset')->where('created_at', '<', now()->subHour())->delete();
+            DB::table('password_reset')->where('created_at', '<', now()->addHour())->delete();
         })->hourly();
     }
 

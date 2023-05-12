@@ -17,9 +17,7 @@ class UserController extends Controller
 {
 
     public function __construct(private SubmitPasswordService $submitPasswordService)
-    {
-        $this->middleware('throttle:4,1')->only('logUser');
-    }
+    {}
 
     public function registration(): View
     {
