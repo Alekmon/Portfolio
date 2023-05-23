@@ -18,4 +18,5 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'admin'])->group(funct
     Route::resource('tables', TableController::class);
     //бронирование
     Route::resource('reservation', ReservationController::class);
+    
 });

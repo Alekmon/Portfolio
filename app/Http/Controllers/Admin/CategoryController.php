@@ -68,7 +68,7 @@ class CategoryController extends Controller
         $validated = $request->validated();
         $validated['image'] = $category->image;
 
-        if($request->hasFile('image')){
+        if($request->hasFile('image')) {
             Storage::delete($category->image);
             $validated['image'] = $request->file('image')->store('public/categories');
         }

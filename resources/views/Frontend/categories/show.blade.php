@@ -4,6 +4,7 @@
 
 @section('content')
 <div class="container w-full px-5 py-6 mx-auto">
+  <a href="{{ route('categories.index') }}" class="px-4 py-3 mt-2 ml-3 bg-indigo-500 hover:bg-indigo-700 rounded hover:text-white">Назад</a>
     <h1 class="text-center text-gray-800 text-lg">Категория: {{ $category->name }}</h1>
     <div class="grid lg:grid-cols-4 gap-y-6 mt-10">
 
@@ -16,7 +17,6 @@
           <p class="leading-normal text-gray-700">{{ $menu->description }}</p>
         </div>
         <div class="flex items-center justify-between p-4">
-          <button class="px-4 py-2 bg-green-600 text-green-50">Заказать</button>
           <span class="text-xl text-green-600">${{ $menu->price }}</span>
         </div>
       </div>

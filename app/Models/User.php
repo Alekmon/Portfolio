@@ -43,6 +43,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public $login_tries_limmit = 3;
+    public $login_tries_limmit = 5;
 
 }

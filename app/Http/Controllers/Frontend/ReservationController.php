@@ -20,6 +20,7 @@ class ReservationController extends Controller
         $reservation = $request->session()->get('reservation');
         $minDate = Carbon::today();
         $maxDate = Carbon::now()->addWeek();
+        
         return view('Frontend.reservation.step-one', compact('reservation', 'minDate', 'maxDate'));
     }
 
